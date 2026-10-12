@@ -1,0 +1,436 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>Reconciliation summary</title><style>body{font-family:sans-serif;margin:2rem}
+table{border-collapse:collapse}td,th{border:1px solid #ccc;padding:4px 8px;text-align:left}</style></head><body>
+<h1>Reconciliation summary</h1><p><em>Synthetic demo data.</em></p>
+<ul><li>Orders: 300</li><li>Payments: 311</li><li>Rejected rows: 0</li>
+<li>Net processed: 36,164.17</li><li>Exceptions: 46 across 46 orders</li>
+<li>Absolute amount at risk: 2,419.11</li></ul>
+<h2>By type</h2><table><tr><td>currency_mismatch</td><td>5</td></tr><tr><td>duplicate_charge</td><td>6</td></tr><tr><td>fee_discrepancy</td><td>7</td></tr><tr><td>missing_payment</td><td>8</td></tr><tr><td>orphan_payment</td><td>1</td></tr><tr><td>refund_not_reflected</td><td>6</td></tr><tr><td>refund_ticket_unprocessed</td><td>4</td></tr><tr><td>rounding_issue</td><td>5</td></tr><tr><td>source_drift</td><td>4</td></tr></table><h2>Exceptions</h2><table class="dataframe t">
+  <thead>
+    <tr style="text-align: right;">
+      <th>order_id</th>
+      <th>error_type</th>
+      <th>payment_ids</th>
+      <th>expected</th>
+      <th>actual</th>
+      <th>difference</th>
+      <th>detail</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>#1005</td>
+      <td>refund_ticket_unprocessed</td>
+      <td></td>
+      <td>24.71</td>
+      <td>0.00</td>
+      <td>-24.71</td>
+      <td>approved ticket T0015 has no matching processor refund</td>
+    </tr>
+    <tr>
+      <td>#1007</td>
+      <td>refund_ticket_unprocessed</td>
+      <td></td>
+      <td>20.43</td>
+      <td>0.00</td>
+      <td>-20.43</td>
+      <td>approved ticket T0017 has no matching processor refund</td>
+    </tr>
+    <tr>
+      <td>#1012</td>
+      <td>missing_payment</td>
+      <td></td>
+      <td>105.06</td>
+      <td>0.00</td>
+      <td>-105.06</td>
+      <td>order has no succeeded charge</td>
+    </tr>
+    <tr>
+      <td>#1015</td>
+      <td>currency_mismatch</td>
+      <td>ch_00014</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>order USD vs charge EUR</td>
+    </tr>
+    <tr>
+      <td>#1025</td>
+      <td>refund_ticket_unprocessed</td>
+      <td></td>
+      <td>64.31</td>
+      <td>0.00</td>
+      <td>-64.31</td>
+      <td>approved ticket T0018 has no matching processor refund</td>
+    </tr>
+    <tr>
+      <td>#1034</td>
+      <td>fee_discrepancy</td>
+      <td>ch_00033</td>
+      <td>5.32</td>
+      <td>5.82</td>
+      <td>0.50</td>
+      <td>fee differs from 2.9% + 30c</td>
+    </tr>
+    <tr>
+      <td>#1044</td>
+      <td>rounding_issue</td>
+      <td>ch_00043</td>
+      <td>242.61</td>
+      <td>242.60</td>
+      <td>-0.01</td>
+      <td>charge amount differs from order total</td>
+    </tr>
+    <tr>
+      <td>#1053</td>
+      <td>rounding_issue</td>
+      <td>ch_00052</td>
+      <td>147.79</td>
+      <td>147.78</td>
+      <td>-0.01</td>
+      <td>charge amount differs from order total</td>
+    </tr>
+    <tr>
+      <td>#1056</td>
+      <td>missing_payment</td>
+      <td></td>
+      <td>90.47</td>
+      <td>0.00</td>
+      <td>-90.47</td>
+      <td>order has no succeeded charge</td>
+    </tr>
+    <tr>
+      <td>#1064</td>
+      <td>rounding_issue</td>
+      <td>ch_00063</td>
+      <td>147.61</td>
+      <td>147.60</td>
+      <td>-0.01</td>
+      <td>charge amount differs from order total</td>
+    </tr>
+    <tr>
+      <td>#1065</td>
+      <td>rounding_issue</td>
+      <td>ch_00064</td>
+      <td>225.88</td>
+      <td>225.87</td>
+      <td>-0.01</td>
+      <td>charge amount differs from order total</td>
+    </tr>
+    <tr>
+      <td>#1066</td>
+      <td>missing_payment</td>
+      <td></td>
+      <td>80.33</td>
+      <td>0.00</td>
+      <td>-80.33</td>
+      <td>order has no succeeded charge</td>
+    </tr>
+    <tr>
+      <td>#1069</td>
+      <td>duplicate_charge</td>
+      <td>ch_00068;chdup_00068</td>
+      <td>27.63</td>
+      <td>55.26</td>
+      <td>27.63</td>
+      <td>2 charges for one order</td>
+    </tr>
+    <tr>
+      <td>#1084</td>
+      <td>missing_payment</td>
+      <td></td>
+      <td>59.93</td>
+      <td>0.00</td>
+      <td>-59.93</td>
+      <td>order has no succeeded charge</td>
+    </tr>
+    <tr>
+      <td>#1092</td>
+      <td>fee_discrepancy</td>
+      <td>ch_00091</td>
+      <td>6.10</td>
+      <td>6.60</td>
+      <td>0.50</td>
+      <td>fee differs from 2.9% + 30c</td>
+    </tr>
+    <tr>
+      <td>#1095</td>
+      <td>source_drift</td>
+      <td></td>
+      <td>124.89</td>
+      <td>129.89</td>
+      <td>5.00</td>
+      <td>orders CSV vs API differ: total</td>
+    </tr>
+    <tr>
+      <td>#1108</td>
+      <td>fee_discrepancy</td>
+      <td>ch_00107</td>
+      <td>1.59</td>
+      <td>2.09</td>
+      <td>0.50</td>
+      <td>fee differs from 2.9% + 30c</td>
+    </tr>
+    <tr>
+      <td>#1109</td>
+      <td>missing_payment</td>
+      <td></td>
+      <td>151.99</td>
+      <td>0.00</td>
+      <td>-151.99</td>
+      <td>order has no succeeded charge</td>
+    </tr>
+    <tr>
+      <td>#1112</td>
+      <td>refund_not_reflected</td>
+      <td>re_00111</td>
+      <td>128.34</td>
+      <td>0.00</td>
+      <td>-128.34</td>
+      <td>processor refunded more than order records (expected=processor, actual=order)</td>
+    </tr>
+    <tr>
+      <td>#1113</td>
+      <td>currency_mismatch</td>
+      <td>ch_00112</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>order USD vs charge EUR</td>
+    </tr>
+    <tr>
+      <td>#1127</td>
+      <td>fee_discrepancy</td>
+      <td>ch_00126</td>
+      <td>2.88</td>
+      <td>5.88</td>
+      <td>3.00</td>
+      <td>fee differs from 2.9% + 30c</td>
+    </tr>
+    <tr>
+      <td>#1135</td>
+      <td>duplicate_charge</td>
+      <td>ch_00134;chdup_00134</td>
+      <td>99.86</td>
+      <td>199.72</td>
+      <td>99.86</td>
+      <td>2 charges for one order</td>
+    </tr>
+    <tr>
+      <td>#1136</td>
+      <td>source_drift</td>
+      <td></td>
+      <td>87.39</td>
+      <td>87.39</td>
+      <td>0.00</td>
+      <td>orders CSV vs API differ: financial_status</td>
+    </tr>
+    <tr>
+      <td>#1141</td>
+      <td>duplicate_charge</td>
+      <td>ch_00140;chdup_00140</td>
+      <td>136.62</td>
+      <td>273.24</td>
+      <td>136.62</td>
+      <td>2 charges for one order</td>
+    </tr>
+    <tr>
+      <td>#1146</td>
+      <td>currency_mismatch</td>
+      <td>ch_00145</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>order USD vs charge EUR</td>
+    </tr>
+    <tr>
+      <td>#1147</td>
+      <td>currency_mismatch</td>
+      <td>ch_00146</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>order USD vs charge EUR</td>
+    </tr>
+    <tr>
+      <td>#1148</td>
+      <td>currency_mismatch</td>
+      <td>ch_00147</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>order USD vs charge EUR</td>
+    </tr>
+    <tr>
+      <td>#1149</td>
+      <td>source_drift</td>
+      <td></td>
+      <td>193.93</td>
+      <td>198.93</td>
+      <td>5.00</td>
+      <td>orders CSV vs API differ: total</td>
+    </tr>
+    <tr>
+      <td>#1164</td>
+      <td>fee_discrepancy</td>
+      <td>ch_00163</td>
+      <td>7.06</td>
+      <td>8.31</td>
+      <td>1.25</td>
+      <td>fee differs from 2.9% + 30c</td>
+    </tr>
+    <tr>
+      <td>#1180</td>
+      <td>fee_discrepancy</td>
+      <td>ch_00179</td>
+      <td>3.36</td>
+      <td>6.36</td>
+      <td>3.00</td>
+      <td>fee differs from 2.9% + 30c</td>
+    </tr>
+    <tr>
+      <td>#1183</td>
+      <td>missing_payment</td>
+      <td></td>
+      <td>124.28</td>
+      <td>0.00</td>
+      <td>-124.28</td>
+      <td>order has no succeeded charge</td>
+    </tr>
+    <tr>
+      <td>#1209</td>
+      <td>refund_ticket_unprocessed</td>
+      <td></td>
+      <td>67.99</td>
+      <td>0.00</td>
+      <td>-67.99</td>
+      <td>approved ticket T0016 has no matching processor refund</td>
+    </tr>
+    <tr>
+      <td>#1211</td>
+      <td>source_drift</td>
+      <td></td>
+      <td>98.20</td>
+      <td>98.20</td>
+      <td>0.00</td>
+      <td>orders CSV vs API differ: financial_status</td>
+    </tr>
+    <tr>
+      <td>#1218</td>
+      <td>refund_not_reflected</td>
+      <td>re_00217</td>
+      <td>200.80</td>
+      <td>0.00</td>
+      <td>-200.80</td>
+      <td>processor refunded more than order records (expected=processor, actual=order)</td>
+    </tr>
+    <tr>
+      <td>#1223</td>
+      <td>missing_payment</td>
+      <td></td>
+      <td>46.98</td>
+      <td>0.00</td>
+      <td>-46.98</td>
+      <td>order has no succeeded charge</td>
+    </tr>
+    <tr>
+      <td>#1225</td>
+      <td>duplicate_charge</td>
+      <td>ch_00224;chdup_00224</td>
+      <td>26.76</td>
+      <td>53.52</td>
+      <td>26.76</td>
+      <td>2 charges for one order</td>
+    </tr>
+    <tr>
+      <td>#1231</td>
+      <td>duplicate_charge</td>
+      <td>ch_00230;chdup_00230</td>
+      <td>39.54</td>
+      <td>79.08</td>
+      <td>39.54</td>
+      <td>2 charges for one order</td>
+    </tr>
+    <tr>
+      <td>#1249</td>
+      <td>duplicate_charge</td>
+      <td>ch_00248;chdup_00248</td>
+      <td>162.84</td>
+      <td>325.68</td>
+      <td>162.84</td>
+      <td>2 charges for one order</td>
+    </tr>
+    <tr>
+      <td>#1250</td>
+      <td>missing_payment</td>
+      <td></td>
+      <td>235.98</td>
+      <td>0.00</td>
+      <td>-235.98</td>
+      <td>order has no succeeded charge</td>
+    </tr>
+    <tr>
+      <td>#1262</td>
+      <td>refund_not_reflected</td>
+      <td>re_00261</td>
+      <td>92.66</td>
+      <td>0.00</td>
+      <td>-92.66</td>
+      <td>processor refunded more than order records (expected=processor, actual=order)</td>
+    </tr>
+    <tr>
+      <td>#1266</td>
+      <td>refund_not_reflected</td>
+      <td>re_00265</td>
+      <td>135.05</td>
+      <td>0.00</td>
+      <td>-135.05</td>
+      <td>processor refunded more than order records (expected=processor, actual=order)</td>
+    </tr>
+    <tr>
+      <td>#1269</td>
+      <td>refund_not_reflected</td>
+      <td>re_00268</td>
+      <td>11.65</td>
+      <td>0.00</td>
+      <td>-11.65</td>
+      <td>processor refunded more than order records (expected=processor, actual=order)</td>
+    </tr>
+    <tr>
+      <td>#1284</td>
+      <td>fee_discrepancy</td>
+      <td>ch_00283</td>
+      <td>6.12</td>
+      <td>6.62</td>
+      <td>0.50</td>
+      <td>fee differs from 2.9% + 30c</td>
+    </tr>
+    <tr>
+      <td>#1291</td>
+      <td>rounding_issue</td>
+      <td>ch_00290</td>
+      <td>146.33</td>
+      <td>146.32</td>
+      <td>-0.01</td>
+      <td>charge amount differs from order total</td>
+    </tr>
+    <tr>
+      <td>#1292</td>
+      <td>refund_not_reflected</td>
+      <td>re_00291</td>
+      <td>223.60</td>
+      <td>0.00</td>
+      <td>-223.60</td>
+      <td>processor refunded more than order records (expected=processor, actual=order)</td>
+    </tr>
+    <tr>
+      <td>#9999</td>
+      <td>orphan_payment</td>
+      <td>ch_orphan1</td>
+      <td>0.00</td>
+      <td>42.00</td>
+      <td>42.00</td>
+      <td>charge references unknown order</td>
+    </tr>
+  </tbody>
+</table></body></html>
