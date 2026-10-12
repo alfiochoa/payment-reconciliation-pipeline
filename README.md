@@ -54,6 +54,8 @@ python -m recon run --api-url http://127.0.0.1:8765 --tickets data/tickets.csv  
 python -m pytest -q
 ```
 
+Or in one step: `make demo` (generates data, starts the mock API, runs the reconciliation, stops the mock). Design rationale: [docs/DESIGN.md](docs/DESIGN.md).
+
 Options: `generate --orders 300 --seed 42 --out data`, `run --orders … --payments … --out out` (payments may be `.json`). `--api-url` and `--tickets` are optional; without them only the processor-vs-orders checks run.
 
 **Idempotent:** reports contain no timestamps and rows are sorted, so re-running on the same input gives byte-identical output (tested). API results are sorted before use, so retries and page order don't change output. Invalid rows are rejected and logged, never silently dropped.
