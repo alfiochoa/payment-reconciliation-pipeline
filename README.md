@@ -13,6 +13,8 @@ A small **multi-source ETL** that reconciles four inputs and produces an excepti
 
 ![HTML summary report (synthetic data)](docs/summary.png)
 
+**[Sample report (live)](https://alfiochoa.github.io/payment-reconciliation-pipeline/)** — the generated `summary.html`, hosted on GitHub Pages (synthetic data).
+
 ## Problem
 
 Store owners routinely find that payouts don't match orders: a charge never arrived, a customer was charged twice, a refund was issued in the processor but not in the shop, fees look wrong, or a one-cent rounding gap shows up. Finding these by hand in spreadsheets is slow and error-prone. This tool does it deterministically and explains each exception.
