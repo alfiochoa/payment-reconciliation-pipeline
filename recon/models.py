@@ -24,3 +24,12 @@ class Payment(BaseModel):
     fee: int = Field(ge=0)
     currency: str = Field(min_length=3, max_length=3)
     status: Literal["succeeded", "failed", "pending"]
+
+
+class Ticket(BaseModel):
+    """Support/refund ticket export."""
+    ticket_id: str
+    order_id: str
+    created: datetime
+    requested_amount: int = Field(ge=0)
+    status: Literal["open", "approved", "denied"]

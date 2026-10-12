@@ -6,7 +6,8 @@ import pandas as pd
 from pydantic import ValidationError
 
 from .generate import expected_fee
-from .models import Order, Payment
+from .api import fetch_orders
+from .models import Order, Payment, Ticket
 
 log = logging.getLogger("recon")
 COLS = ["order_id", "error_type", "payment_ids", "expected", "actual", "difference", "detail"]
@@ -30,7 +31,7 @@ def load(path: Path, model) -> tuple[pd.DataFrame, pd.DataFrame]:
     return pd.DataFrame(good), pd.DataFrame(bad)
 
 
-def reconcile(orders: pd.DataFrame, payments: pd.DataFrame) -> pd.DataFrame:
+def reconcile(orders, payments, api_orders=None, tickets=None) -> pd.DataFrame:
     rows = []
 
     def add(oid, kind, pids, exp, act, detail):
@@ -71,16 +72,38 @@ def reconcile(orders: pd.DataFrame, payments: pd.DataFrame) -> pd.DataFrame:
             add(oid, "orphan_payment", g["id"], 0, int(g["amount"].sum()), "charge references unknown order")
     for c in ok[ok["order_id"].isna()].itertuples():
         add("", "orphan_payment", [c.id], 0, int(c.amount), "charge has no order_id")
+    if api_orders is not None:
+        a = api_orders.set_index("order_id")
+        for o in orders.itertuples():
+            if o.order_id not in a.index:
+                add(o.order_id, "source_drift", [], o.total, 0, "order missing from orders API")
+                continue
+            r = a.loc[o.order_id]
+            diffs = [f for f in ("total", "refunded_amount", "financial_status", "currency") if getattr(o, f) != r[f]]
+            if diffs:
+                add(o.order_id, "source_drift", [], o.total, int(r["total"]), "orders CSV vs API differ: " + ",".join(diffs))
+        for oid in sorted(set(a.index) - set(orders["order_id"])):
+            add(oid, "source_drift", [], 0, int(a.loc[oid, "total"]), "order only in orders API")
+    if tickets is not None:
+        for t in tickets[tickets["status"] == "approved"].itertuples():
+            got = int(refunds.get(t.order_id, 0))
+            if got < t.requested_amount:
+                add(t.order_id, "refund_ticket_unprocessed", [], t.requested_amount, got,
+                    f"approved ticket {t.ticket_id} has no matching processor refund")
     out = pd.DataFrame(rows, columns=COLS)
     return out.sort_values(["order_id", "error_type"], kind="stable").reset_index(drop=True)
 
 
-def run(orders_path: Path, payments_path: Path) -> tuple[pd.DataFrame, dict]:
+def run(orders_path: Path, payments_path: Path, api_url: str | None = None,
+        tickets_path: Path | None = None) -> tuple[pd.DataFrame, dict]:
     orders, bad_o = load(orders_path, Order)
     pays, bad_p = load(payments_path, Payment)
-    exc = reconcile(orders, pays)
+    api = pd.DataFrame(fetch_orders(api_url)) if api_url else None
+    tickets, bad_t = load(tickets_path, Ticket) if tickets_path else (None, pd.DataFrame())
+    exc = reconcile(orders, pays, api, tickets)
     ok = pays[pays["status"] == "succeeded"]
-    stats = dict(orders=len(orders), payments=len(pays), rejected_rows=len(bad_o) + len(bad_p),
+    stats = dict(orders=len(orders), payments=len(pays), rejected_rows=len(bad_o) + len(bad_p) + len(bad_t),
+                 sources=2 + (api is not None) + (tickets is not None),
                  exceptions=len(exc), orders_affected=exc["order_id"].nunique(),
                  amount_at_risk=int(exc["difference"].abs().sum()),
                  by_type=exc["error_type"].value_counts().sort_index().to_dict(),

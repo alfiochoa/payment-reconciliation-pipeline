@@ -14,4 +14,9 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt
       - run: python -m pytest -q
-      - run: python -m recon generate && python -m recon run
+      - name: End-to-end demo (mock API)
+        run: |
+          python -m recon generate
+          python -m recon serve-mock &
+          sleep 2
+          python -m recon run --api-url http://127.0.0.1:8765 --tickets data/tickets.csv
