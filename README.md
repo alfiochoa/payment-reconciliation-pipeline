@@ -63,6 +63,8 @@ Default demo (300 orders, 311 payment rows, seed 42): **38 exceptions, 38 inject
 
 ## Sample output
 
+![HTML summary report (synthetic data)](docs/summary.png)
+
 One row per error type from `out/exceptions.csv` (amounts in currency units; the full run also writes `out/summary.html` with totals and all 38 rows):
 
 | order_id | error_type | payment_ids | expected | actual | difference | detail |
@@ -82,3 +84,7 @@ One row per error type from `out/exceptions.csv` (amounts in currency units; the
 - Single currency assumed per order; no FX conversion.
 - Partial refunds are compared as totals, not individually matched.
 - Synthetic data is cleaner than real exports; real-world column mapping would need an adapter.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
