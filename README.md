@@ -11,6 +11,8 @@ A small **multi-source ETL** that reconciles four inputs and produces an excepti
 
 > **All data in this repo is synthetic.** It is produced by a seeded generator; no real customers, orders or processor accounts are involved.
 
+![HTML summary report (synthetic data)](docs/summary.png)
+
 ## Problem
 
 Store owners routinely find that payouts don't match orders: a charge never arrived, a customer was charged twice, a refund was issued in the processor but not in the shop, fees look wrong, or a one-cent rounding gap shows up. Finding these by hand in spreadsheets is slow and error-prone. This tool does it deterministically and explains each exception.
@@ -79,8 +81,6 @@ The generator injects a known number of each error (documented in `recon/generat
 Default demo (300 orders, 311 payment rows, 23 tickets, seed 42): **46 exceptions, 46 injected, 46 found.** Denied/open tickets and legitimately refunded orders are included as noise and correctly produce no exceptions.
 
 ## Sample output
-
-![HTML summary report (synthetic data)](docs/summary.png)
 
 One row per error type from `out/exceptions.csv` (amounts in currency units; the full run also writes `out/summary.html` with totals and all 46 rows):
 
