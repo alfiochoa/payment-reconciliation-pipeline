@@ -61,6 +61,20 @@ The generator injects a known number of each error (documented in `recon/generat
 
 Default demo (300 orders, 311 payment rows, seed 42): **38 exceptions, 38 injected, 38 found.**
 
+## Sample output
+
+One row per error type from `out/exceptions.csv` (amounts in currency units; the full run also writes `out/summary.html` with totals and all 38 rows):
+
+| order_id | error_type | payment_ids | expected | actual | difference | detail |
+|---|---|---|---|---|---|---|
+| #1012 | missing_payment |  | 105.06 | 0.00 | -105.06 | order has no succeeded charge |
+| #1015 | currency_mismatch | ch_00014 | 0.00 | 0.00 | 0.00 | order USD vs charge EUR |
+| #1034 | fee_discrepancy | ch_00033 | 5.32 | 5.82 | 0.50 | fee differs from 2.9% + 30c |
+| #1044 | rounding_issue | ch_00043 | 242.61 | 242.60 | -0.01 | charge amount differs from order total |
+| #1069 | duplicate_charge | ch_00068;chdup_00068 | 27.63 | 55.26 | 27.63 | 2 charges for one order |
+| #1112 | refund_not_reflected | re_00111 | 128.34 | 0.00 | -128.34 | processor refunded more than order records (expected=processor, actual=order) |
+| #9999 | orphan_payment | ch_orphan1 | 0.00 | 42.00 | 42.00 | charge references unknown order |
+
 ## Limitations
 
 - Matching is by `order_id` in charge metadata; no fuzzy matching or payout/bank-deposit level grouping.
