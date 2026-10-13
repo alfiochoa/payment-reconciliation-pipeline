@@ -2,6 +2,8 @@
 
 ![CI](https://github.com/alfiochoa/payment-reconciliation-pipeline/actions/workflows/ci.yml/badge.svg)
 
+**[Sample report (live)](https://alfiochoa.github.io/payment-reconciliation-pipeline/)** — the generated `summary.html`, hosted on GitHub Pages (synthetic data).
+
 A small **multi-source ETL** that reconciles four inputs and produces an exceptions report (`exceptions.csv` + `summary.html`):
 
 1. **Payment processor export** (Stripe-style balance transactions, CSV/JSON)
@@ -12,8 +14,6 @@ A small **multi-source ETL** that reconciles four inputs and produces an excepti
 > **All data in this repo is synthetic.** It is produced by a seeded generator; no real customers, orders or processor accounts are involved.
 
 ![HTML summary report (synthetic data)](docs/summary.png)
-
-**[Sample report (live)](https://alfiochoa.github.io/payment-reconciliation-pipeline/)** — the generated `summary.html`, hosted on GitHub Pages (synthetic data).
 
 ## Problem
 
