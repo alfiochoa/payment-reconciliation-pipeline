@@ -101,11 +101,16 @@ def run(orders_path: Path, payments_path: Path, api_url: str | None = None,
     api = pd.DataFrame(fetch_orders(api_url)) if api_url else None
     tickets, bad_t = load(tickets_path, Ticket) if tickets_path else (None, pd.DataFrame())
     exc = reconcile(orders, pays, api, tickets)
-    ok = pays[pays["status"] == "succeeded"]
-    stats = dict(orders=len(orders), payments=len(pays), rejected_rows=len(bad_o) + len(bad_p) + len(bad_t),
-                 sources=2 + (api is not None) + (tickets is not None),
-                 exceptions=len(exc), orders_affected=exc["order_id"].nunique(),
-                 amount_at_risk=int(exc["difference"].abs().sum()),
-                 by_type=exc["error_type"].value_counts().sort_index().to_dict(),
-                 net_processed=int(ok.loc[ok.type == "charge", "amount"].sum() - ok.loc[ok.type == "refund", "amount"].sum()))
+    stats = summarize(exc, orders, pays, rejected_rows=len(bad_o) + len(bad_p) + len(bad_t),
+                      sources=2 + (api is not None) + (tickets is not None))
     return exc, stats
+
+
+def summarize(exc: pd.DataFrame, orders: pd.DataFrame, pays: pd.DataFrame, rejected_rows: int, sources: int) -> dict:
+    """Headline numbers for the report. Shared by the CLI (run) and the Streamlit demo."""
+    ok = pays[pays["status"] == "succeeded"]
+    return dict(orders=len(orders), payments=len(pays), rejected_rows=rejected_rows, sources=sources,
+                exceptions=len(exc), orders_affected=exc["order_id"].nunique(),
+                amount_at_risk=int(exc["difference"].abs().sum()),
+                by_type=exc["error_type"].value_counts().sort_index().to_dict(),
+                net_processed=int(ok.loc[ok.type == "charge", "amount"].sum() - ok.loc[ok.type == "refund", "amount"].sum()))

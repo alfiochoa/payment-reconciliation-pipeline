@@ -47,11 +47,13 @@ flowchart LR
 | `recon/reconcile.py` | Load/validate + all detection rules |
 | `recon/report.py` | CSV + HTML output |
 | `recon/cli.py` | `generate`, `serve-mock` and `run` commands |
+| `recon/demo.py` | Logic behind the web demo (default, generated or uploaded data; proof against the injected errors) |
+| `streamlit_app.py` | The web demo: exceptions, proof, validation and how it works |
 
 ## Run it
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements-dev.txt   # runtime (pandas, pydantic, streamlit) + pytest
 python -m recon generate            # -> data/: orders.csv, payments.csv, orders_api.json, tickets.csv, injected_errors.csv
 python -m recon serve-mock &        # mock Shopify orders API on :8765 (every 3rd request is a 429)
 python -m recon run --api-url http://127.0.0.1:8765 --tickets data/tickets.csv   # -> out/exceptions.csv, out/summary.html
@@ -63,6 +65,15 @@ Or in one step: `make demo` (generates data, starts the mock API, runs the recon
 Options: `generate --orders 300 --seed 42 --out data`, `run --orders … --payments … --out out` (payments may be `.json`). `--api-url` and `--tickets` are optional; without them only the processor-vs-orders checks run.
 
 **Idempotent:** reports contain no timestamps and rows are sorted, so re-running on the same input gives byte-identical output (tested). API results are sorted before use, so retries and page order don't change output. Invalid rows are rejected and logged, never silently dropped.
+
+## Web demo
+
+`streamlit run streamlit_app.py` opens an interactive demo of the same code (no mock server needed: it reads the generated orders API snapshot):
+
+- **Exceptions:** the findings by type, filterable, with `exceptions.csv` and `summary.html` to download.
+- **Proof:** what the pipeline found against the errors the generator injected (46 of 46 on the default data, no false positives).
+- **Validation:** tick "Add 5 deliberately broken rows" and watch them being rejected and counted instead of dropped.
+- Data from the default set (300 orders, seed 42), a generator (orders and seed of your choice) or your own CSV files (5 MB and 20,000 rows per file; processed in memory and deleted, use fake data only).
 
 ## Checks and injected errors
 
